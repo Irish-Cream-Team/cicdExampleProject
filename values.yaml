@@ -1,36 +1,27 @@
-name: "testname"
-# If you want to overide the full name you can include the 'fullnameOverride' value
-#fullname:
+name: "<serviceName>"
 replicaCount: 1
 
 images:
-  PullSecrets: ['rabazhub']
-  repository: rabazhub.azurecr.io/values-test
+  PullSecrets: 
+    name: <ACRreg>
+  repository: <your-project-acr-name>.azurecr.io/values-test
   tag: "latest"
-
-config:
-  configmaps: []
-  env:
-  - name: MESSAGE
-    value: 'did work'
 
 service:
   type: ClusterIP
   ports:
-  - name: testname
-    port: 3000
   - name: http
-    port: 80
-    protocol: TCP
-  - name: https
-    port: 443
-    targetPort: 443
+    port: 3000
+
+config:
+  configmaps: [<your-configmap>]
+
 
 ingress:
   enabled: true
   hosts:
-  - host: test-cd.branch-yesodot.org
+  - host: <your-dns-name>.branch-yesodot.org
     paths:
-      - path: /message
-        service: testname
+      - path: /<something>
+        service: service
         port: "3000"
